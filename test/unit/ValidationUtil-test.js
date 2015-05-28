@@ -1,6 +1,11 @@
-import { expect } from 'chai';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 
 import * as ValidationUtil from './../../src/ValidationUtil';
+
+chai.use(chaiAsPromised);
+
+const expect = chai.expect;
 
 describe('ValidationUtil', () => {
 	describe('isString', () => {
@@ -21,7 +26,11 @@ describe('ValidationUtil', () => {
 
   describe('isStringPromise', () => {
     it('should resolve when proper string is passed in', () => {
-      return ValidationUtil.isStringPromise('some string');
+      return expect(ValidationUtil.isStringPromise('some string')).to.eventually.be.true;
+    });
+
+    it('should reject when number is passed in', () => {
+      return expect(ValidationUtil.isStringPromise(7)).to.be.rejectedWith(false);
     });
   });
 });
