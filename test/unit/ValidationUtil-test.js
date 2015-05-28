@@ -1,9 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
 import * as ValidationUtil from './../../src/ValidationUtil';
 
 chai.use(chaiAsPromised);
+chai.use(sinonChai);
 
 const expect = chai.expect;
 
@@ -31,6 +34,40 @@ describe('ValidationUtil', () => {
 
     it('should reject when number is passed in', () => {
       return expect(ValidationUtil.isStringPromise(7)).to.be.rejectedWith(false);
+    });
+  });
+
+  describe('testPromise', () => {
+    beforeEach(() => {
+      sinon.stub(ValidationUtil, 'isString');
+    });
+
+    afterEach(() => {
+      ValidationUtil.isString.restore();
+    });
+
+    it('should resolve promise when stub returns true', () => {
+      ValidationUtil.isString.returns(true);
+
+      // Passing number just to prove that our functionality is stubbed.
+      return ValidationUtil.isStringPromise(7)
+      .then(result => {
+        expect(result).to.be.true;
+        expect(ValidationUtil.isString).to.have.been.calledWith(7);
+        expect(ValidationUtil.isString).to.have.been.calledOnce;
+      });
+    });
+
+    it('should reject promise when stub returns false', () => {
+      ValidationUtil.isString.returns(false);
+
+      // Passing string just to prove that our functionality is stubbed.
+      return ValidationUtil.isStringPromise('some string')
+      .catch(result => {
+        expect(result).to.be.false;
+        expect(ValidationUtil.isString).to.have.been.calledWith('some string');
+        expect(ValidationUtil.isString).to.have.been.calledOnce;
+      });
     });
   });
 });
