@@ -9,4 +9,13 @@ describe('ValidationUtil', () => {
       expect(result).to.be.true;
     });
   });
+
+  describe('isStringAsync', (done) => {
+    it('should return true, when a string value is passed in', () => {
+      ValidationUtil.isString('some string', result => {
+        expect(result).to.be.true;
+        done();
+      });
+    });
+  });
 });
