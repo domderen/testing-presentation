@@ -8,3 +8,15 @@ export function isStringAsync(obj, cb) {
     cb(result);
   }, 100);
 };
+
+export function isStringPromise(obj) {
+  return new Promise((resolve, reject) => {
+    const result = this.isString(obj);
+
+    if(result) {
+      return resolve(true);
+    }
+
+    return reject(false);
+  });
+};

@@ -18,4 +18,10 @@ describe('ValidationUtil', () => {
       });
     });
   });
+
+  describe('isStringPromise', () => {
+    it('should resolve when proper string is passed in', () => {
+      return ValidationUtil.isStringPromise('some string');
+    });
+  });
 });
