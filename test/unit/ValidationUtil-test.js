@@ -70,4 +70,23 @@ describe('ValidationUtil', () => {
       });
     });
   });
+
+  describe('meta-testing', () => {
+    const testCases = [
+      {expectedValue: true, testValue: 'some string'},
+      {expectedValue: false, testValue: 7},
+      {expectedValue: false, testValue: true},
+      {expectedValue: false, testValue: null},
+      {expectedValue: false, testValue: undefined},
+      {expectedValue: false, testValue: {}},
+      {expectedValue: false, testValue: () => {}},
+      {expectedValue: false, testValue: Symbol()},
+    ];
+
+    testCases.forEach(testCase => {
+      it(`should return ${testCase.expectedValue}, for parameter of type ${typeof testCase.testValue}`, () => {
+        expect(ValidationUtil.isString(testCase.testValue)).to.equal(testCase.expectedValue);
+      });
+    });
+  });
 });
